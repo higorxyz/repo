@@ -16,7 +16,6 @@ export const ReadmeViewer = ({ username, repoName, description, projectTitle }) 
 
   useBodyScrollLock(isModalOpen);
 
-  // Resetar README quando mudar de repositório
   useEffect(() => {
     setReadme(null);
     setError(false);
@@ -25,13 +24,18 @@ export const ReadmeViewer = ({ username, repoName, description, projectTitle }) 
   const fetchReadme = async () => {
     setLoading(true);
     try {
+      const headers = {
+        Accept: 'application/vnd.github.v3.html'
+      };
+      
+      const token = import.meta.env.VITE_GITHUB_TOKEN;
+      if (token && token !== 'your_github_token_here') {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch(
         `https://api.github.com/repos/${username}/${repoName}/readme`,
-        {
-          headers: {
-            Accept: 'application/vnd.github.v3.html'
-          }
-        }
+        { headers }
       );
 
       if (!response.ok) {
@@ -39,21 +43,16 @@ export const ReadmeViewer = ({ username, repoName, description, projectTitle }) 
       }
 
       const html = await response.text();
-      
-      // Processar HTML para remover links âncora
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = html;
       
-      // Remove todos os links âncora (#) e localhost
       const links = tempDiv.querySelectorAll('a');
       links.forEach(link => {
         const href = link.getAttribute('href');
         if (href && (href.startsWith('#') || href.startsWith('http://localhost'))) {
-          // Remove o link mas mantém o texto
           const textNode = document.createTextNode(link.textContent);
           link.parentNode.replaceChild(textNode, link);
         } else if (href && href.startsWith('http')) {
-          // Links externos mantém mas força abrir em nova aba
           link.setAttribute('target', '_blank');
           link.setAttribute('rel', 'noopener noreferrer');
         }
@@ -99,7 +98,6 @@ export const ReadmeViewer = ({ username, repoName, description, projectTitle }) 
     };
   }, [isModalOpen]);
 
-  // Se não tem repoName, mostra apenas a descrição
   if (!repoName) {
     return <p className="text-gray-400 text-sm">{description}</p>;
   }
@@ -107,12 +105,10 @@ export const ReadmeViewer = ({ username, repoName, description, projectTitle }) 
   return (
     <>
       <div className="space-y-2">
-        {/* Descrição curta sempre visível */}
         {description && description !== 'Projeto desenvolvido no GitHub' && (
           <p className="text-gray-400 text-sm">{description}</p>
         )}
 
-        {/* Botão para abrir modal do README */}
         <button
           onClick={handleOpenModal}
           className="
@@ -126,7 +122,6 @@ export const ReadmeViewer = ({ username, repoName, description, projectTitle }) 
         </button>
       </div>
 
-      {/* Modal - Renderizado no body via Portal */}
       {isModalOpen && (
         <Portal>
           <div 

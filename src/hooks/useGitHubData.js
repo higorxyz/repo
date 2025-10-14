@@ -114,7 +114,14 @@ export const useGitHubData = (username) => {
 
   const fetchGitHubData = useCallback(async () => {
       try {
-        const userResponse = await fetch(`https://api.github.com/users/${username}`);
+        const headers = {};
+        const token = import.meta.env.VITE_GITHUB_TOKEN;
+        
+        if (token && token !== 'your_github_token_here') {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        const userResponse = await fetch(`https://api.github.com/users/${username}`, { headers });
         if (!userResponse.ok) {
           throw new Error('Usuário não encontrado');
         }
@@ -122,7 +129,8 @@ export const useGitHubData = (username) => {
         const userData = await userResponse.json();
 
         const reposResponse = await fetch(
-          `https://api.github.com/users/${username}/repos?sort=updated&per_page=100`
+          `https://api.github.com/users/${username}/repos?sort=updated&per_page=100`,
+          { headers }
         );
         
         if (!reposResponse.ok) {

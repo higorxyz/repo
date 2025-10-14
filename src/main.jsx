@@ -13,7 +13,6 @@ if (typeof window !== 'undefined') {
   const normalizedPath = window.location.pathname.endsWith('/') && window.location.pathname !== '/' ? window.location.pathname.slice(0, -1) : window.location.pathname
 
   if (normalizedPath !== normalizedBase) {
-    // Force single-entry routing by stripping unknown subpaths
     window.history.replaceState(null, '', normalizedBase)
   }
 }

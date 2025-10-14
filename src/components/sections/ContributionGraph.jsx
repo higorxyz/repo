@@ -6,7 +6,7 @@ const CELL_SIZE = 12;
 const CELL_GAP = 3;
 const MONTH_LABEL_HEIGHT = 18;
 const SIDE_LABEL_WIDTH = 28;
-const LABEL_GAP = 12; // gap-3 ≈ 12px
+const LABEL_GAP = 12;
 
 const buildTimeline = (map, locale) => {
   const weeks = [];
@@ -84,7 +84,6 @@ const calculateCurrentStreak = (days) => {
   for (let index = days.length - 1; index >= 0; index -= 1) {
     const day = days[index];
     if (day.date > now) {
-      // Ignora dias futuros para manter o streak correto
       continue;
     }
 
@@ -138,8 +137,16 @@ export const ContributionGraph = ({ username = 'higorxyz' }) => {
 
       const requestFallback = async () => {
         try {
+          const headers = {};
+          const token = import.meta.env.VITE_GITHUB_TOKEN;
+          
+          if (token && token !== 'your_github_token_here') {
+            headers['Authorization'] = `Bearer ${token}`;
+          }
+
           const response = await fetch(
-            `https://api.github.com/users/${username}/events/public?per_page=100`
+            `https://api.github.com/users/${username}/events/public?per_page=100`,
+            { headers }
           );
 
           if (!response.ok) {

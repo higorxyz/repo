@@ -3,7 +3,7 @@ import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../hooks/useLanguage';
 
 export const ContributionGraph = ({ username = 'higorxyz' }) => {
-  const { theme } = useTheme(); // Usar contexto em vez de MutationObserver
+  const { theme } = useTheme();
   const { t } = useLanguage();
   const [contributions, setContributions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,6 @@ export const ContributionGraph = ({ username = 'higorxyz' }) => {
     const fetchContributions = async () => {
       setLoading(true);
       try {
-        // Usar API que faz scraping do perfil público do GitHub
         const response = await fetch(
           `https://github-contributions-api.jogruber.de/v4/${username}?y=last`
         );
@@ -25,12 +24,9 @@ export const ContributionGraph = ({ username = 'higorxyz' }) => {
         }
 
         const data = await response.json();
-        
-        // Processar dados da API
         const contributionMap = processContributionsFromAPI(data);
         setContributions(contributionMap);
         
-        // Calcular estatísticas
         const total = data.total.lastYear || 0;
         const currentStreak = calculateCurrentStreak(contributionMap);
         const longestStreak = calculateLongestStreak(contributionMap);
@@ -38,7 +34,6 @@ export const ContributionGraph = ({ username = 'higorxyz' }) => {
         setStats({ total, currentStreak, longestStreak });
       } catch (error) {
         console.error('Erro ao buscar contribuições:', error);
-        // Fallback para o método antigo se a API falhar
         fallbackFetch();
       } finally {
         setLoading(false);
@@ -47,8 +42,16 @@ export const ContributionGraph = ({ username = 'higorxyz' }) => {
 
     const fallbackFetch = async () => {
       try {
+        const headers = {};
+        const token = import.meta.env.VITE_GITHUB_TOKEN;
+        
+        if (token && token !== 'your_github_token_here') {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+
         const response = await fetch(
-          `https://api.github.com/users/${username}/events/public?per_page=100`
+          `https://api.github.com/users/${username}/events/public?per_page=100`,
+          { headers }
         );
 
         if (!response.ok) return;
@@ -77,13 +80,11 @@ export const ContributionGraph = ({ username = 'higorxyz' }) => {
     const startDate = new Date(today);
     startDate.setDate(today.getDate() - currentDay - (51 * 7));
 
-    // Criar mapa de contribuições por data
     const contributionMap = {};
     data.contributions.forEach(contrib => {
       contributionMap[contrib.date] = contrib.count;
     });
 
-    // Criar array de 371 dias (53 semanas)
     for (let i = 0; i < 371; i++) {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
@@ -105,19 +106,16 @@ export const ContributionGraph = ({ username = 'higorxyz' }) => {
     const today = new Date();
     const contributionCount = {};
 
-    // Processar eventos
     events.forEach(event => {
       const date = new Date(event.created_at);
       const dateKey = date.toISOString().split('T')[0];
       contributionCount[dateKey] = (contributionCount[dateKey] || 0) + 1;
     });
 
-    // Calcular início (domingo da semana atual menos 52 semanas)
     const currentDay = today.getDay();
     const startDate = new Date(today);
-    startDate.setDate(today.getDate() - currentDay - (51 * 7)); // 52 semanas começando no domingo
+    startDate.setDate(today.getDate() - currentDay - (51 * 7));
 
-    // Criar array de 371 dias (53 semanas) para garantir cobertura completa
     for (let i = 0; i < 371; i++) {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);

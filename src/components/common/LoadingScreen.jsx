@@ -10,14 +10,6 @@ export const LoadingScreen = ({ onLoadingComplete }) => {
   const [isExiting, setIsExiting] = useState(false);
   const [hasCompleted, setHasCompleted] = useState(false);
 
-  const messages = [
-    t('loading.init'),
-    t('loading.projects'),
-    t('loading.github'),
-    t('loading.experience'),
-    t('loading.almost'),
-  ];
-
   useEffect(() => {
     const progressInterval = setInterval(() => {
       setProgress(prev => {
@@ -36,6 +28,14 @@ export const LoadingScreen = ({ onLoadingComplete }) => {
   }, []);
 
   useEffect(() => {
+    const messages = [
+      t('loading.init'),
+      t('loading.projects'),
+      t('loading.github'),
+      t('loading.experience'),
+      t('loading.almost'),
+    ];
+
     const messageIndex = Math.min(
       Math.floor((progress / 100) * messages.length),
       messages.length - 1
@@ -47,8 +47,7 @@ export const LoadingScreen = ({ onLoadingComplete }) => {
       setIsExiting(true);
       onLoadingComplete();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progress, onLoadingComplete, hasCompleted]);
+  }, [progress, onLoadingComplete, hasCompleted, t]);
 
   return (
     <div

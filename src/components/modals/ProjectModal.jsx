@@ -7,7 +7,7 @@ import { useLanguage } from '../../hooks/useLanguage';
 import { useBodyScrollLock } from '../../hooks/useBodyScrollLock';
 
 export const ProjectModal = ({ project, isOpen, onClose }) => {
-  const { theme } = useTheme(); // Usar contexto
+  const { theme } = useTheme();
   const { t } = useLanguage();
   const isDarkMode = theme === 'dark';
   const [readme, setReadme] = useState(null);
@@ -17,14 +17,13 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
 
   useBodyScrollLock(isOpen);
 
-  // Detectar mudanças no tamanho da tela - OPTIMIZED com throttling
   useEffect(() => {
     let timeoutId;
     const handleResize = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         setIsMobile(window.innerWidth < 640);
-      }, 150); // Throttle de 150ms
+      }, 150);
     };
     
     window.addEventListener('resize', handleResize, { passive: true });
@@ -34,31 +33,33 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
     };
   }, []);
 
-  // Resetar README quando mudar de projeto (DEVE VIR PRIMEIRO)
   useEffect(() => {
     setReadme(null);
     setLoadingReadme(false);
     setReadmeNotFound(false);
   }, [project?.id]);
 
-  // Buscar README quando o modal abrir
   useEffect(() => {
     const fetchReadme = async () => {
       if (isOpen && project?.repoName) {
         setLoadingReadme(true);
         try {
+          const headers = {
+            Accept: 'application/vnd.github.v3.html'
+          };
+          
+          const token = import.meta.env.VITE_GITHUB_TOKEN;
+          if (token && token !== 'your_github_token_here') {
+            headers['Authorization'] = `Bearer ${token}`;
+          }
+
           const response = await fetch(
             `https://api.github.com/repos/higorxyz/${project.repoName}/readme`,
-            {
-              headers: {
-                Accept: 'application/vnd.github.v3.html'
-              }
-            }
+            { headers }
           );
 
           if (response.ok) {
             const html = await response.text();
-            // Extrair apenas texto do HTML
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
             const text = tempDiv.textContent || tempDiv.innerText || '';
@@ -79,7 +80,6 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
     fetchReadme();
   }, [isOpen, project?.repoName]);
 
-  // Prevenir scroll do body quando modal aberto
   useEffect(() => {
     if (!isOpen) {
       return undefined;
