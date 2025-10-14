@@ -1,0 +1,379 @@
+/* Transições suaves centralizadas para TODOS os cards animados */
+/* Cobre: projetos (/20), conquistas (/30), skills (/20), contato (/20), sociais (/5), e o bloco com bg-black/50 */
+.card-motion {
+  transition: box-shadow 0.3s ease,
+              background 0.3s ease,
+              border-color 0.3s ease;
+  will-change: transform, box-shadow;
+}
+
+.card-motion-input {
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+}
+
+/* Sombras sutis personalizadas */
+.shadow-subtle {
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+}
+
+.shadow-subtle-lg {
+  box-shadow: 0 6px 16px rgba(168, 85, 247, 0.25);
+}
+
+.shadow-subtle-xl {
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3);
+}
+
+.hover\:shadow-subtle-2xl:hover {
+  box-shadow: 0 12px 28px rgba(168, 85, 247, 0.35);
+}
+
+/* Regras específicas de hover agora são tratadas por card-motion + classes Tailwind */
+/* Cards de projetos: linguagem utilizada mais escura no modo claro */
+.light-theme .text-purple-300 {
+  color: #7c3aed !important;
+}
+/* Sobre Mim: cor de fundo do card 'Global' igual ao 'Full Stack' no modo claro */
+
+.light-theme .bg-gradient-to-br.from-purple-500\/20.to-transparent,
+.light-theme .bg-gradient-to-br.from-pink-500\/20.to-transparent {
+  background: #fff !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+/* Variáveis CSS para Tema Escuro (padrão) */
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-card: rgba(168, 85, 247, 0.1);
+  --bg-card-hover: rgba(168, 85, 247, 0.2);
+  
+  --text-primary: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  
+  --border-color: rgba(168, 85, 247, 0.3);
+  --border-hover: rgba(168, 85, 247, 0.5);
+  
+  --shadow-color: rgba(168, 85, 247, 0.5);
+  --gradient-from: #a855f7;
+  --gradient-to: #ec4899;
+  
+  --navbar-bg: rgba(0, 0, 0, 0.4);
+  --input-bg: rgba(0, 0, 0, 0.3);
+  --code-bg: rgba(17, 24, 39, 0.8);
+  
+  --button-text: #ffffff;
+}
+
+/* Variáveis para Tema Claro */
+.light-theme {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #e2e8f0;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --bg-card-hover: rgba(255, 255, 255, 1);
+  
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-tertiary: #64748b;
+  
+  --border-color: rgba(148, 163, 184, 0.4);
+  --border-hover: rgba(168, 85, 247, 0.6);
+  
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --gradient-from: #a855f7;
+  --gradient-to: #ec4899;
+  
+  --navbar-bg: rgba(255, 255, 255, 0.95);
+  --input-bg: #ffffff;
+  --code-bg: #ffffff;
+  
+  --button-text: #ffffff;
+}
+
+/* Transições suaves */
+*,
+*::before,
+*::after {
+  transition-property: background-color, color, border-color, box-shadow;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+/* Canvas de partículas - ajuste no tema claro */
+.light-theme canvas {
+  opacity: 1;
+}
+
+/* Background principal */
+.light-theme .bg-black {
+  background-color: var(--bg-primary) !important;
+}
+
+/* Textos */
+.light-theme .text-white {
+  color: var(--text-primary) !important;
+}
+
+.light-theme .text-gray-300 {
+  color: var(--text-secondary) !important;
+}
+
+.light-theme .text-gray-400,
+.light-theme .text-gray-500 {
+  color: var(--text-tertiary) !important;
+}
+
+/* Bordas */
+.light-theme .border-purple-500\/30 {
+  border-color: var(--border-color) !important;
+}
+
+/* Cards com mais contraste no claro */
+.light-theme .bg-purple-500\/20,
+.light-theme .bg-purple-500\/10 {
+  background-color: var(--bg-card) !important;
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.light-theme .bg-black\/30,
+.light-theme .bg-black\/40,
+.light-theme .bg-black\/50 {
+  background-color: var(--input-bg) !important;
+  border: 1px solid var(--border-color);
+}
+
+/* Sombras mais visíveis no claro */
+.light-theme .shadow-purple-500\/50 {
+  box-shadow: 0 4px 12px var(--shadow-color) !important;
+}
+
+.light-theme .hover\:shadow-2xl:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Gradientes de cards - cards brancos com borda no claro */
+.light-theme .from-purple-500\/30,
+.light-theme .from-purple-500\/20 {
+  background: white !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.light-theme .from-purple-500\/30.to-pink-500\/30,
+.light-theme .from-purple-500\/20.to-pink-500\/20 {
+  background: white !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+/* Hover nos cards - destaque mais visível */
+.light-theme .from-purple-500\/30:hover,
+.light-theme .from-purple-500\/20:hover {
+  background: white !important;
+  border-color: rgba(168, 85, 247, 0.4) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Navbar */
+.light-theme nav {
+  background-color: var(--navbar-bg) !important;
+  border-bottom-color: var(--border-color) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Código */
+.light-theme pre {
+  background-color: var(--code-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.light-theme .text-purple-400 {
+  color: #7c3aed !important;
+}
+
+.light-theme .bg-gray-800\/50 {
+  background-color: #f1f5f9 !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Footer */
+.light-theme footer {
+  background-color: var(--bg-secondary);
+  border-top-color: var(--border-color) !important;
+}
+
+/* Inputs */
+.light-theme input,
+.light-theme textarea {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.light-theme input::placeholder,
+.light-theme textarea::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+.light-theme input:focus,
+.light-theme textarea:focus {
+  border-color: #a855f7 !important;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1) !important;
+}
+
+/* BOTÕES COM GRADIENTE - Texto branco em ambos os temas */
+.light-theme .bg-gradient-to-r {
+  color: var(--button-text) !important;
+}
+
+.light-theme .bg-gradient-to-r * {
+  color: var(--button-text) !important;
+}
+
+/* Garante texto branco em todos os botões com gradiente */
+.light-theme button.bg-gradient-to-r,
+.light-theme a.bg-gradient-to-r {
+  color: white !important;
+}
+
+/* Sombra mais visível nos botões no tema claro */
+.light-theme .bg-gradient-to-r {
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.25) !important;
+}
+
+.light-theme .bg-gradient-to-r:hover {
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.35) !important;
+}
+
+/* Stats cards - mais contraste */
+.light-theme .from-purple-500\/30.to-pink-500\/30 {
+  background: white !important;
+  border: 2px solid rgba(168, 85, 247, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* IMPORTANTE: Textos com gradiente - remover sombra de texto no claro */
+.light-theme .bg-gradient-to-r.from-white.to-purple-200 {
+  background: linear-gradient(to right, #7c3aed, #a855f7) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+
+/* Textos com bg-clip-text devem usar cores sólidas no claro */
+
+/* Garante gradiente nos títulos com bg-clip-text e text-transparent no modo claro */
+.light-theme .bg-clip-text.text-transparent {
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+}
+
+/* Garantir que números nos stats fiquem visíveis */
+.light-theme h4.text-4xl {
+  text-shadow: none !important;
+}
+
+/* Scroll top button */
+.light-theme button[class*="fixed bottom-8 right-8"] {
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3) !important;
+}
+
+/* Social icons laterais - ícones BRANCOS em ambos os temas */
+/* Seletor mais específico para pegar bottom-6 e bottom-8 */
+.fixed[class*="bottom-"] a {
+  color: white !important;
+}
+
+.fixed[class*="bottom-"] a svg {
+  color: white !important;
+  stroke: white !important;
+}
+
+.fixed[class*="bottom-"] a .text-white {
+  color: white !important;
+}
+
+/* Modo claro - mantém fundo escuro e ícones brancos */
+.light-theme .fixed[class*="bottom-"][class*="left-"] a {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: white !important;
+}
+
+.light-theme .fixed[class*="bottom-"][class*="left-"] a svg {
+  color: white !important;
+  stroke: white !important;
+  fill: none !important;
+}
+
+.light-theme .fixed[class*="bottom-"][class*="left-"] a .text-white {
+  color: white !important;
+}
+
+/* Garante que os ícones SVG dos lucide-react permaneçam brancos */
+.light-theme .fixed[class*="bottom-"][class*="left-"] svg[class*="text-white"] {
+  color: white !important;
+  stroke: white !important;
+}
+
+/* Animação do toggle */
+.theme-toggle {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.05);
+}
+
+.theme-toggle:active {
+  transform: scale(0.98);
+}
+
+.light-theme .theme-toggle {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajuste nos badges de status - mais contraste */
+.light-theme .bg-green-500\/20 {
+  background-color: rgba(34, 197, 94, 0.2) !important;
+  border-color: rgba(34, 197, 94, 0.4) !important;
+}
+
+.light-theme .bg-blue-500\/20 {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+  border-color: rgba(59, 130, 246, 0.4) !important;
+}
+
+.light-theme .bg-yellow-500\/20 {
+  background-color: rgba(234, 179, 8, 0.2) !important;
+  border-color: rgba(234, 179, 8, 0.4) !important;
+}
+
+/* Tags de tech - mais contraste */
+.light-theme .bg-purple-500\/20.text-purple-300 {
+  background-color: rgba(168, 85, 247, 0.12) !important;
+  color: #7c3aed !important;
+  border-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+/* Ring de destaque nos projetos featured */
+.light-theme .ring-purple-500 {
+  --tw-ring-color: rgba(168, 85, 247, 0.4) !important;
+}
+
+/* Backdrop blur cards */
+.light-theme .backdrop-blur-xl {
+  backdrop-filter: blur(10px);
+}
+
+/* Ícones sociais - mais contraste no hover */
+.light-theme a[class*="bg-purple-500/20"]:hover {
+  background-color: rgba(168, 85, 247, 0.15) !important;
+  border-color: rgba(168, 85, 247, 0.4) !important;
+}
